@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// Token holds a single Lox token.
 type Token struct {
 	Type    TokenType
 	Lexeme  string
@@ -9,58 +10,106 @@ type Token struct {
 	Line    int
 }
 
+// String prints a debug string for a Lox token.
 func (t Token) String() string {
-	return fmt.Sprintf("%s %s %s %s", t.Type, t.Lexeme, t.Literal, t.Line)
+	var literal string
+	if t.Literal != nil {
+		literal = t.Literal.String()
+	} else {
+		literal = "<nil>"
+	}
+	return fmt.Sprintf("%s %s %s %d", t.Type, t.Lexeme, literal, t.Line)
 }
 
+// TokenType indicates the Lox token type.
 type TokenType int
 
+// Enumerate the token types.
 const (
-	// Single-character tokens
-	LEFT_PAREN TokenType = iota
-	RIGHT_PAREN
-	LEFT_BRACE
-	RIGHT_BRACE
-	COMMA
-	DOT
-	MINUS
-	PLUS
-	SEMICOLON
-	SLASH
-	STAR
-
-	// One or two character tokens
-	BANG
-	BANG_EQUAL
-	EQUAL
-	EQUAL_EQUAL
-	GREATER
-	GREATER_EQUAL
-	LESS
-	LESS_EQUAL
-
-	// Literals
-	IDENTIFIER
-	STRING
-	NUMBER
-
-	// Keywords
-	AND
-	CLASS
-	ELSE
-	FALSE
-	FUN
-	FOR
-	IF
-	NIL
-	OR
-	PRINT
-	RETURN
-	SUPER
-	THIS
-	TRUE
-	VAR
-	WHILE
-
+	LeftParen TokenType = iota
+	RightParen
+	LeftBrace
+	RightBrace
+	Comma
+	Dot
+	Minus
+	Plus
+	Semicolon
+	Slash
+	Star
+	Bang
+	BangEqual
+	Equal
+	EqualEqual
+	Greater
+	GreaterEqual
+	Less
+	LessEqual
+	Identifier
+	String
+	Number
+	And
+	Class
+	Else
+	False
+	Fun
+	For
+	If
+	Nil
+	Or
+	Print
+	Return
+	Super
+	This
+	True
+	Var
+	While
 	EOF
 )
+
+var tokenTypeNames = [...]string{
+	"LeftParen",
+	"RightParen",
+	"LeftBrace",
+	"RightBrace",
+	"Comma",
+	"Dot",
+	"Minus",
+	"Plus",
+	"Semicolon",
+	"Slash",
+	"Star",
+	"Bang",
+	"BangEqual",
+	"Equal",
+	"EqualEqual",
+	"Greater",
+	"GreaterEqual",
+	"Less",
+	"LessEqual",
+	"Identifier",
+	"String",
+	"Number",
+	"And",
+	"Class",
+	"Else",
+	"False",
+	"Fun",
+	"For",
+	"If",
+	"Nil",
+	"Or",
+	"Print",
+	"Return",
+	"Super",
+	"This",
+	"True",
+	"Var",
+	"While",
+	"EOF",
+}
+
+// String prints a description of the TokenType.
+func (t TokenType) String() string {
+	return tokenTypeNames[t]
+}

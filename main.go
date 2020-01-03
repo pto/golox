@@ -23,6 +23,7 @@ func main() {
 	}
 }
 
+// runFile executes the Lox program in the file.
 func runFile(path string) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -38,6 +39,7 @@ func runFile(path string) {
 	run(string(bytes))
 }
 
+// runPrompt implements a Lox read-evaluate-print loop.
 func runPrompt() {
 	fmt.Print("> ")
 	scanner := bufio.NewScanner(os.Stdin)
@@ -49,6 +51,7 @@ func runPrompt() {
 	fmt.Println()
 }
 
+// run executes the Lox program in the source.
 func run(source string) {
 	scanner := NewScanner(source)
 	tokens := scanner.ScanTokens()
@@ -57,6 +60,7 @@ func run(source string) {
 	}
 }
 
+// reportError prints an error message and sets the error flag.
 func reportError(line int, message string, at string) {
 	fmt.Fprintf(os.Stderr, "line %d: %s %s", line, message, at)
 	hadError = true
