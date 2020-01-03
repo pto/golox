@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 	"unicode"
 	"unicode/utf8"
@@ -29,22 +28,22 @@ func NewScanner(source string) Scanner {
 }
 
 var keywords = map[string]TokenType{
-	"And":    And,
-	"Class":  Class,
-	"Else":   Else,
-	"False":  False,
-	"For":    For,
-	"Fun":    Fun,
-	"If":     If,
-	"Nil":    Nil,
-	"Or":     Or,
-	"Print":  Print,
-	"Return": Return,
-	"Super":  Super,
-	"This":   This,
-	"True":   True,
-	"Var":    Var,
-	"While":  While,
+	"and":    And,
+	"class":  Class,
+	"else":   Else,
+	"false":  False,
+	"for":    For,
+	"fun":    Fun,
+	"if":     If,
+	"nil":    Nil,
+	"or":     Or,
+	"print":  Print,
+	"return": Return,
+	"super":  Super,
+	"this":   This,
+	"true":   True,
+	"var":    Var,
+	"while":  While,
 }
 
 // ScanTokens processes the scanner source, populating and returning the
@@ -147,7 +146,7 @@ func (s *Scanner) Advance() rune {
 }
 
 // AddToken adds a token to the Tokens slice.
-func (s *Scanner) AddToken(tokenType TokenType, literal fmt.Stringer) {
+func (s *Scanner) AddToken(tokenType TokenType, literal interface{}) {
 	s.Tokens = append(s.Tokens, Token{tokenType, s.Source[s.Start:s.Current],
 		literal, s.Line})
 }
@@ -194,6 +193,7 @@ func (s *Scanner) AddString() {
 	}
 	if s.IsAtEnd() {
 		reportError(s.Line, "Unterminated string", "")
+		return
 	}
 
 	// Eat closing quote
@@ -228,6 +228,7 @@ func (s *Scanner) AddIdentifier() {
 	r := s.Peek()
 	for unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_' {
 		s.Advance()
+		r = s.Peek()
 	}
 	text := s.Source[s.Start:s.Current]
 	tokenType, ok := keywords[text]

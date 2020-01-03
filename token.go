@@ -6,17 +6,27 @@ import "fmt"
 type Token struct {
 	Type    TokenType
 	Lexeme  string
-	Literal fmt.Stringer
+	Literal interface{} // either string or float64
 	Line    int
 }
 
 // String prints a debug string for a Lox token.
 func (t Token) String() string {
 	var literal string
-	if t.Literal != nil {
-		literal = t.Literal.String()
-	} else {
+	if t.Literal == nil {
 		literal = "<nil>"
+	} else {
+		f, ok := t.Literal.(float64)
+		if ok {
+			literal = fmt.Sprintf("%g", f)
+		} else {
+			s, ok := t.Literal.(string)
+			if ok {
+				literal = s
+			} else {
+				literal = "<unknown>"
+			}
+		}
 	}
 	return fmt.Sprintf("%s %s %s %d", t.Type, t.Lexeme, literal, t.Line)
 }
